@@ -1,0 +1,11 @@
+- name: Deploy custom Nginx image to Kubernetes
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Create Kubernetes deployment
+      ansible.builtin.command: kubectl create deployment nginx-custom --image=nginx-custom:latest
+      ignore_errors: true
+
+    - name: Expose deployment
+      ansible.builtin.command: kubectl expose deployment nginx-custom --type=ClusterIP --port=80
+      ignore_errors: true
