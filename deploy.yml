@@ -1,11 +1,51 @@
-- name: Deploy custom Nginx image to Kubernetes
+- name: Deploy nginx custom on Kubernetes
   hosts: localhost
   connection: local
-  tasks:
-    - name: Create Kubernetes deployment
-      ansible.builtin.command: kubectl create deployment nginx-custom --image=nginx-custom:latest
-      ignore_errors: true
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
 
-    - name: Expose deployment
-      ansible.builtin.command: kubectl expose deployment nginx-custom --type=ClusterIP --port=80
-      ignore_errors: true
+  tasks:
+
+    - name: Create Deployment
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: nginx-custom
+            namespace: default
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: nginx-custom
+            template:
+              metadata:
+                labels:
+                  app: nginx-custom
+              spec:
+                containers:
+                  - name: nginx-custom
+                    image: nginx-custom:latest
+                    imagePullPolicy: Never
+                    ports:
+                      - containerPort: 80
+
+    - name: Create Service
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: nginx-custom
+            namespace: default
+          spec:
+            selector:
+              app: nginx-custom
+            ports:
+              - protocol: TCP
+                port: 80
+                targetPort: 80
+            type: ClusterIP
