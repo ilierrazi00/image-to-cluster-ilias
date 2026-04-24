@@ -126,7 +126,7 @@ le Deployment et le Service de manière déclarative et idempotente.
 
 ### Playbook Ansible (deploy.yml)
 
-```yaml
+``` yaml
 - name: Deploy nginx custom on Kubernetes
   hosts: localhost
   connection: local
@@ -178,13 +178,14 @@ le Deployment et le Service de manière déclarative et idempotente.
                 port: 80
                 targetPort: 80
             type: ClusterIP
+```
 
-```markdown
 ### Vérification
 
-```bash
+``` bash
 kubectl get pods
 kubectl get svc
+```
 
 ------------------------------------------------------------------------
 
@@ -200,10 +201,10 @@ Puis ouvrir le port 8080 depuis l'onglet PORTS.
 
 ## Résultat
 
-L'application est accessible via le navigateur et affiche la page HTML personnalisée.
+L'application est accessible via le navigateur et affiche la page HTML
+personnalisée.
 
 ![Résultat application](resultat.png)
-
 
 ------------------------------------------------------------------------
 
