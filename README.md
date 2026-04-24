@@ -124,6 +124,68 @@ ansible-playbook deploy.yml
 Le playbook Ansible utilise le module `kubernetes.core.k8s` pour créer
 le Deployment et le Service de manière déclarative et idempotente.
 
+### Playbook Ansible (deploy.yml)
+
+```yaml
+- name: Deploy nginx custom on Kubernetes
+  hosts: localhost
+  connection: local
+  vars:
+    ansible_python_interpreter: /usr/bin/python3
+
+  tasks:
+
+    - name: Create Deployment
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: apps/v1
+          kind: Deployment
+          metadata:
+            name: nginx-custom
+            namespace: default
+          spec:
+            replicas: 1
+            selector:
+              matchLabels:
+                app: nginx-custom
+            template:
+              metadata:
+                labels:
+                  app: nginx-custom
+              spec:
+                containers:
+                  - name: nginx-custom
+                    image: nginx-custom:latest
+                    imagePullPolicy: Never
+                    ports:
+                      - containerPort: 80
+
+    - name: Create Service
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Service
+          metadata:
+            name: nginx-custom
+            namespace: default
+          spec:
+            selector:
+              app: nginx-custom
+            ports:
+              - protocol: TCP
+                port: 80
+                targetPort: 80
+            type: ClusterIP
+
+```markdown
+### Vérification
+
+```bash
+kubectl get pods
+kubectl get svc
+
 ------------------------------------------------------------------------
 
 ### 7. Accès à l'application
