@@ -138,8 +138,9 @@ Puis ouvrir le port 8080 depuis l'onglet PORTS.
 
 ## Résultat
 
-L'application est accessible via le navigateur et affiche la page HTML
-personnalisée.
+L'application est accessible via le navigateur et affiche la page HTML personnalisée.
+
+![Résultat application](resultat.png)
 
 
 ------------------------------------------------------------------------
