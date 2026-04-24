@@ -208,6 +208,14 @@ personnalisée.
 
 ------------------------------------------------------------------------
 
+## Automatisation
+
+Le projet permet un déploiement reproductible grâce à :
+- Packer pour la création de l’image Docker
+- Ansible pour le déploiement automatisé sur Kubernetes
+
+------------------------------------------------------------------------
+
 ## Conclusion
 
 Ce projet permet de mettre en place une chaîne complète DevOps :
